@@ -1,7 +1,7 @@
 # Solar Oracle Walkman - IV Voiceprint Smart Contract
 A blockchain-based smart contract that validates and stores IV voiceprint data securely on the Ethereum network. Think of it as a digital notary that checks if voiceprint data of each handmade DSSC is genuine and keeps permanent records.
 
-This is also a conceptual approach to explore how two systems can understand each other without mutual language or shared knowledge; By using generative system as fuzzy extractor, the solar energy transaction is not only transactional but also cognitive. 
+This is also a conceptual approach to explore how two systems can understand each other without mutual language or shared knowledge; By using generative system as fuzzy extractor, the solar energy transaction is not only transactional but also cognitive. Currently this is yet a "oracle machine" due to the absent of the vector space of the data (VSP).
 
 Visit wiki for more details: https://wiki.sgmk-ssam.ch/wiki/The_Solar_Oracle_Walkman#RAVE_as_latent_oracle
 
@@ -17,33 +17,11 @@ Visit wiki for more details: https://wiki.sgmk-ssam.ch/wiki/The_Solar_Oracle_Wal
 
 ## Features
 
-- **Comprehensive IV Validation**: Advanced security validation for voiceprint data
+- **Comprehensive IV Validation**: Advanced security validation for voiceprint data of handmade DSSC.
 - **EIP-712 Signatures**: Secure oracle signature verification
 - **On-chain Storage**: Immutable IV voiceprint records
 - **Chain Integrity**: Oracle verification of entire chain validity
 - **Access Control**: Owner-managed oracle signer updates
-
-## Project Structure
-
-```
-solar-oracle-walkman/
-├── contracts/
-│   └── SolarOracleWalkman.sol    # The main smart contract code
-├── pix/
-│   ├── DIY_DSSC_with_cyanotype_pattern.jpg
-│   └── I-V_tester_made_by_Marc_Dusseiller.jpg
-├── scripts/
-│   ├── deploy.js                # Script to deploy contract to blockchain
-│   ├── test-contract.js         # Script to test the contract works
-│   └── verify-testnet.js        # Script to verify deployment
-├── test/
-│   └── SolarOracleWalkman.test.js # Comprehensive test suite
-├── hardhat.config.cjs           # Configuration for development tools
-├── package.json                 # List of required software packages
-├── .nvmrc                       # Node.js version specification
-├── DEPLOYMENT_GUIDE.md          # Detailed deployment instructions
-└── README.md                    # This file
-```
 
 ## Security Validation Rules
 
