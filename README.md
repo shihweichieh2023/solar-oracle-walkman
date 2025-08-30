@@ -1,62 +1,145 @@
+# IV FakeChain Oracle - Solidity Smart Contract
 
-# FakeChain IV Test Server (macOS friendly)
+This is the Solidity smart contract version of the Python FakeChain IV server, converted to run on-chain with enhanced security validation.
 
-This is a **zero‑blockchain** local server to prototype your IV "upload & verify" flow from Max/MSP.
-It mimics "on‑chain success" by writing each submission into an **append‑only hash chain** (each block
-hashes the previous one). You get a `tx_id` back immediately, and you can later query or verify the chain.
+## 🔒 Features
 
-## Endpoints
+- **Comprehensive IV Validation**: All Python validation logic converted to Solidity
+- **EIP-712 Signatures**: Secure oracle signature verification
+- **On-chain Storage**: Immutable IV voiceprint records
+- **Chain Integrity**: Oracle verification of entire chain validity
+- **Access Control**: Owner-managed oracle signer updates
 
-- `POST /api/iv` → body: `{"identity": "...", "public_key": "...", "iv7": [7 floats]}`
-  - returns: `{"ok": true, "tx_id": "...", "height": 1, "block_hash": "...", "iv_hash": "..."}`
-- `GET /api/tx/<tx_id>` → fetch one record
-- `GET /api/verify` → recompute hashes and confirm the chain is intact
+## 📁 Project Structure
 
-## Quick start (first time)
+```
+iv_fakechain_server/
+├── contracts/
+│   └── IVFakeChainOracle.sol    # The main smart contract code
+├── scripts/
+│   ├── deploy.js                # Script to deploy contract to blockchain
+│   ├── test-contract.js         # Script to test the contract works
+│   └── verify-testnet.js        # Script to verify deployment
+├── test/
+│   └── IVFakeChainOracle.test.js # Comprehensive test suite
+├── hardhat.config.cjs           # Configuration for development tools
+├── package.json                 # List of required software packages
+├── DEPLOYMENT_GUIDE.md          # Detailed deployment instructions
+└── README.md                    # This file
+```
+
+## 🛡️ Validation Rules (Converted from Python)
+
+1. **Range Validation**: Values must be between 0.01-3.0 (scaled by 1000 in contract)
+2. **Statistical Analysis**: Variance checks for realistic IV curves
+3. **Pattern Detection**: Blocks monotonic sequences
+4. **Duplicate Detection**: Ensures sufficient unique values
+5. **Alternation Limits**: Prevents extreme value jumps
+
+## 🚀 Installation & Setup
 
 ```bash
-cd "/mnt/data/iv_fakechain_server"
-/usr/bin/python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-python server.py
-```
-
-The server listens on `http://127.0.0.1:5000/`.
-
-## Test with curl
-
+cd### Step 1: Install Dependencies
 ```bash
-curl -X POST http://127.0.0.1:5000/api/iv   -H "Content-Type: application/json"   -d '{"identity":"wei","public_key":"pk_demo","iv7":[0.36,0.54,0.66,0.51,1.36,0.086,0.63]}'
+# Install dependencies (requires Node.js 18+)
+npm install
 ```
 
-## Use from Max/MSP with [maxurl]
-
-1) Create a dictionary and fill it:
-
+### Step 2: Compile the Smart Contract
+```bash
+# This converts the Solidity code into bytecode that can run on blockchain
+npx hardhat compile
 ```
-----------begin max5_patcher----------
-1112.3ocwTtbahCD8Y8Ycch6BZ0n0m0vBqEwWJX8wX1ZtY3nLwJb7lqkG+7p
-... (intentionally omitted; see instructions below) ...
-----------end max5_patcher------------
+**What this does**: Translates human-readable contract code into machine code
+
+### Step 3: Deploy Contract to Sepolia Testnet
+```bash
+# Deploy to the live Sepolia testnet
+npx hardhat run scripts/deploy.js --network sepolia
+```
+**What this does**: Puts your smart contract onto the real Sepolia blockchain and gives it an address
+
+### Step 4: Test the Contract
+```bash
+# Run the comprehensive test suite on Sepolia testnet
+npx hardhat run scripts/test-contract.js --network sepolia
 ```
 
-(Skip the long pastedbox: it's easier to build by hand.)
+## 📋 Usage
 
-- [dict iv]
-- messages:
-  - `set identity wei`
-  - `set public_key pk_demo`
-  - `set iv7 0.36 0.54 0.66 0.51 1.36 0.086 0.63`
+### Deploy Contract
+```javascript
+const oracle = await IVFakeChainOracle.deploy(oracleSignerAddress);
+```
 
-2) Connect `[dict iv]` → message `post iv` → `[maxurl http://127.0.0.1:5000/api/iv @method post @type json]`
+### Validate IV Data
+```javascript
+const [isValid, reason] = await oracle.validateIV7Data([1200, 800, 1500, 900, 1100, 1300, 1000]);
+```
 
-3) Use `[route ok tx_id height block_hash iv_hash error]` on the left outlet of `maxurl` to parse the JSON response.
+### Store IV Record
+```javascript
+const report = {
+    identity: "user_123",
+    pubkey: "0x...",
+    ivHash: "0x...",
+    iv7Data: [1200, 800, 1500, 900, 1100, 1300, 1000],
+    timestamp: Math.floor(Date.now() / 1000)
+};
 
-4) To verify later, call: `[maxurl http://127.0.0.1:5000/api/verify]`
+const signature = await signer._signTypedData(domain, types, report);
+const txId = await oracle.verifyAndStore(report, signature);
+```
 
-## Notes
+### Verify Chain Integrity
+```javascript
+const [isValid, invalidCount, status] = await oracle.verifyChainIntegrity();
+```
 
-- This is NOT a blockchain; it's a **tamper-evident log** good enough for rapid prototyping your oracle flow.
-- Later you can swap it for a real chain (Hardhat + Solidity) without changing the Max payload.
-- The database file is `fakechain.db`. Delete it to reset.
+## 🔧 Configuration
+
+- **Oracle Signer**: Address authorized to sign IV reports
+- **Max Staleness**: Maximum age of reports (default: 10 minutes)
+- **Validation Parameters**: All thresholds configurable via constants
+
+## 🧪 Testing
+
+The test suite covers:
+- ✅ Valid IV data acceptance
+- ❌ Invalid data rejection (6 attack scenarios)
+- 🔐 Signature verification
+- 📊 Chain integrity verification
+- 🛡️ Access control
+
+Run tests: `npx hardhat test`
+
+## 🌐 Deployment Networks
+
+Configure in `hardhat.config.js`:
+- **Hardhat**: Local testing
+- **Localhost**: Local node
+- **Mainnet/Testnet**: Add network configs
+
+## 🔐 Security Features
+
+1. **EIP-712 Typed Signatures**: Prevents signature replay attacks
+2. **Nonce Protection**: Each IV hash can only be used once
+3. **Timestamp Validation**: Prevents stale data submission
+4. **Comprehensive Validation**: All Python security rules implemented
+5. **Owner Controls**: Upgradeable oracle signer
+
+## 📊 Gas Optimization
+
+- Scaled integers (×1000) for precision without floating point
+- Efficient validation algorithms
+- Minimal storage patterns
+- Event-based indexing
+
+## 🔄 Migration from Python
+
+The Solidity contract maintains full compatibility with the Python server's validation logic while adding blockchain-native features:
+
+- **Same validation rules** as Python implementation
+- **Enhanced security** with cryptographic signatures
+- **Immutable storage** on blockchain
+- **Decentralized verification** via smart contract
