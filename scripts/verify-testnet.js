@@ -23,7 +23,7 @@ async function verifyTestnetDeployment() {
   console.log(`📦 Current Block: ${blockNumber}`);
   
   // Connect to contract and verify it works
-  const oracle = await ethers.getContractAt("IVFakeChainOracle", CONTRACT_ADDRESS);
+  const oracle = await ethers.getContractAt("SolarOracleWalkman", CONTRACT_ADDRESS);
   const totalRecords = await oracle.totalRecords();
   const oracleSigner = await oracle.oracleSigner();
   

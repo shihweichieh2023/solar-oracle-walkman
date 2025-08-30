@@ -265,7 +265,7 @@ async function getRecordDetails(contract, txId) {
 }
 
 async function main() {
-  console.log("🚀 FakeChain IV Oracle Contract Test - Sepolia Testnet");
+  console.log("🚀 Solar Oracle Walkman Contract Test - Sepolia Testnet");
   console.log("=".repeat(60));
   
   // Get network info and verify we're on Sepolia
@@ -282,12 +282,12 @@ async function main() {
   console.log(`Contract address: ${CONTRACT_ADDRESS}`);
   
   // Connect to deployed contract
-  const IVFakeChainOracle = await ethers.getContractFactory("IVFakeChainOracle");
-  const contract = IVFakeChainOracle.attach(CONTRACT_ADDRESS);
+  const SolarOracleWalkman = await ethers.getContractFactory("SolarOracleWalkman");
+  const contract = SolarOracleWalkman.attach(CONTRACT_ADDRESS);
   
   // Set up EIP-712 domain with correct chain ID
   DOMAIN = {
-    name: "IVFakeChainOracle",
+    name: "SolarOracleWalkman",
     version: "1",
     chainId: Number(network.chainId),
     verifyingContract: CONTRACT_ADDRESS

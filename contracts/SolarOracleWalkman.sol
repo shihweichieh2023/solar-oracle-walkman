@@ -6,11 +6,11 @@ import "@openzeppelin/contracts/utils/cryptography/EIP712.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
- * @title IVFakeChainOracle
+ * @title SolarOracleWalkman
  * @dev Enhanced IV curve voiceprint oracle with comprehensive validation
  * Converts Python FakeChain server logic to on-chain smart contract
  */
-contract IVFakeChainOracle is EIP712, Ownable {
+contract SolarOracleWalkman is EIP712, Ownable {
     using ECDSA for bytes32;
 
     // Oracle configuration
@@ -70,7 +70,7 @@ contract IVFakeChainOracle is EIP712, Ownable {
     bytes32 private constant TYPEHASH =
         keccak256("IVReport(string identity,bytes32 pubkey,bytes32 ivHash,uint256[7] iv7Data,uint256 timestamp)");
 
-    constructor(address _signer) EIP712("IVFakeChainOracle", "1") {
+    constructor(address _signer) EIP712("SolarOracleWalkman", "1") {
         oracleSigner = _signer;
     }
 

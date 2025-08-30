@@ -7,15 +7,15 @@ async function main() {
   console.log("Deploying contracts with the account:", deployer.address);
   console.log("Account balance:", (await ethers.provider.getBalance(deployer.address)).toString());
 
-  // Deploy the IVFakeChainOracle contract
-  const IVFakeChainOracle = await ethers.getContractFactory("IVFakeChainOracle");
+  // Deploy the SolarOracleWalkman contract
+  const SolarOracleWalkman = await ethers.getContractFactory("SolarOracleWalkman");
   
   // Use deployer as oracle signer for demo (in production, use a dedicated oracle key)
-  const oracle = await IVFakeChainOracle.deploy(deployer.address);
+  const oracle = await SolarOracleWalkman.deploy(deployer.address);
   await oracle.waitForDeployment();
 
   const oracleAddress = await oracle.getAddress();
-  console.log("IVFakeChainOracle deployed to:", oracleAddress);
+  console.log("SolarOracleWalkman deployed to:", oracleAddress);
   console.log("Oracle signer set to:", deployer.address);
 
   // Verify deployment

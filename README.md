@@ -15,13 +15,13 @@ A blockchain-based smart contract that validates and stores IV voiceprint data s
 ```
 solar-oracle-walkman/
 ├── contracts/
-│   └── IVFakeChainOracle.sol    # The main smart contract code
+│   └── SolarOracleWalkman.sol    # The main smart contract code
 ├── scripts/
 │   ├── deploy.js                # Script to deploy contract to blockchain
 │   ├── test-contract.js         # Script to test the contract works
 │   └── verify-testnet.js        # Script to verify deployment
 ├── test/
-│   └── IVFakeChainOracle.test.js # Comprehensive test suite
+│   └── SolarOracleWalkman.test.js # Comprehensive test suite
 ├── hardhat.config.cjs           # Configuration for development tools
 ├── package.json                 # List of required software packages
 ├── DEPLOYMENT_GUIDE.md          # Detailed deployment instructions
@@ -69,7 +69,7 @@ npx hardhat run scripts/test-contract.js --network sepolia
 
 ### Deploy Contract
 ```javascript
-const oracle = await IVFakeChainOracle.deploy(oracleSignerAddress);
+const oracle = await SolarOracleWalkman.deploy(oracleSignerAddress);
 ```
 
 ### Validate IV Data
