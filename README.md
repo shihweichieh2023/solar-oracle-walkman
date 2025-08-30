@@ -1,8 +1,21 @@
-# 🔗 Solar Oracle Walkman - IV Voiceprint Smart Contract
+# Solar Oracle Walkman - IV Voiceprint Smart Contract
+A blockchain-based smart contract that validates and stores IV voiceprint data securely on the Ethereum network. Think of it as a digital notary that checks if voiceprint data of each handmade DSSC is genuine and keeps permanent records.
 
-A blockchain-based smart contract that validates and stores IV voiceprint data securely on the Ethereum network. Think of it as a digital notary that checks if voice data is genuine and keeps permanent records.
+This is also a conceptual approach to explore how two systems can understand each other without mutual language or shared knowledge; By using generative system as fuzzy extractor, the solar energy transaction is not only transactional but also cognitive. 
 
-## 🔒 Features
+Visit wiki for more details: https://wiki.sgmk-ssam.ch/wiki/The_Solar_Oracle_Walkman#RAVE_as_latent_oracle
+
+## Visual Documentation
+
+<img src="pix/DIY_DSSC_with_cyanotype_pattern.jpg" alt="DIY DSSC with cyanotype pattern" width="400">
+
+*DIY Dye-Sensitized Solar Cell (DSSC) with cyanotype pattern - handmade solar cell demonstrating the physical basis for IV voiceprint generation*
+
+<img src="pix/I-V_tester_made_by_Marc_Dusseiller.jpg" alt="I-V tester made by Marc Dusseiller" width="400">
+
+*I-V characteristic tester made by Marc Dusseiller - the measurement device that generates the voiceprint data validated by this smart contract*
+
+## Features
 
 - **Comprehensive IV Validation**: Advanced security validation for voiceprint data
 - **EIP-712 Signatures**: Secure oracle signature verification
@@ -10,12 +23,15 @@ A blockchain-based smart contract that validates and stores IV voiceprint data s
 - **Chain Integrity**: Oracle verification of entire chain validity
 - **Access Control**: Owner-managed oracle signer updates
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 solar-oracle-walkman/
 ├── contracts/
 │   └── SolarOracleWalkman.sol    # The main smart contract code
+├── pix/
+│   ├── DIY_DSSC_with_cyanotype_pattern.jpg
+│   └── I-V_tester_made_by_Marc_Dusseiller.jpg
 ├── scripts/
 │   ├── deploy.js                # Script to deploy contract to blockchain
 │   ├── test-contract.js         # Script to test the contract works
@@ -29,7 +45,7 @@ solar-oracle-walkman/
 └── README.md                    # This file
 ```
 
-## 🛡️ Security Validation Rules
+## Security Validation Rules
 
 1. **Range Validation**: Values must be between 0.01-3.0 (scaled by 1000 in contract)
 2. **Statistical Analysis**: Variance checks for realistic IV curves
@@ -37,7 +53,7 @@ solar-oracle-walkman/
 4. **Duplicate Detection**: Ensures sufficient unique values
 5. **Alternation Limits**: Prevents extreme value jumps
 
-## 🚀 Installation & Setup
+## Installation & Setup
 
 ### Step 1: Install Dependencies
 ```bash
@@ -73,7 +89,7 @@ npx hardhat run scripts/deploy.js --network sepolia
 npx hardhat run scripts/test-contract.js --network sepolia
 ```
 
-## 📋 Usage
+## Usage
 
 ### Deploy Contract
 ```javascript
@@ -104,31 +120,31 @@ const txId = await oracle.verifyAndStore(report, signature);
 const [isValid, invalidCount, status] = await oracle.verifyChainIntegrity();
 ```
 
-## 🔧 Configuration
+## Configuration
 
 - **Oracle Signer**: Address authorized to sign IV reports
 - **Max Staleness**: Maximum age of reports (default: 10 minutes)
 - **Validation Parameters**: All thresholds configurable via constants
 
-## 🧪 Testing
+## Testing
 
 The test suite covers:
-- ✅ Valid IV data acceptance
-- ❌ Invalid data rejection (6 attack scenarios)
-- 🔐 Signature verification
-- 📊 Chain integrity verification
-- 🛡️ Access control
+- Valid IV data acceptance
+- Invalid data rejection (6 attack scenarios)
+- Signature verification
+- Chain integrity verification
+- Access control
 
 Run tests: `npx hardhat test`
 
-## 🌐 Deployment Networks
+## Deployment Networks
 
 Configure in `hardhat.config.cjs`:
 - **Hardhat**: Local testing
 - **Localhost**: Local node
 - **Mainnet/Testnet**: Add network configs
 
-## 🔐 Security Features
+## Security Features
 
 1. **EIP-712 Typed Signatures**: Prevents signature replay attacks
 2. **Nonce Protection**: Each IV hash can only be used once
@@ -136,23 +152,23 @@ Configure in `hardhat.config.cjs`:
 4. **Comprehensive Validation**: Advanced security rules implemented
 5. **Owner Controls**: Upgradeable oracle signer
 
-## 📊 Gas Optimization
+## Gas Optimization
 
 - Scaled integers (×1000) for precision without floating point
 - Efficient validation algorithms
 - Minimal storage patterns
 - Event-based indexing
 
-## 🌐 Live Deployment
+## Live Deployment
 
 The SolarOracleWalkman contract is currently deployed on Sepolia testnet:
 
 - **Contract Address**: `0xeF19a90e5786dd0e89264F38f52CF81102db938e`
 - **Network**: Sepolia Testnet (Chain ID: 11155111)
 - **Etherscan**: https://sepolia.etherscan.io/address/0xeF19a90e5786dd0e89264F38f52CF81102db938e
-- **Status**: ✅ Active and verified
+- **Status**: Active and verified
 
-## 🎯 Next Steps
+## Next Steps
 
 1. **Run the tests** to see everything working
 2. **Try modifying test data** to see security in action
