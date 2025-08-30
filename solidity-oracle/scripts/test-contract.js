@@ -1,8 +1,8 @@
 import pkg from 'hardhat';
 const { ethers } = pkg;
 
-// Contract address from deployment
-const CONTRACT_ADDRESS = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+// Contract address on Sepolia testnet
+const CONTRACT_ADDRESS = "0x38608A02e888D6E60919FF1fCe1cce31F01465d5";
 
 // EIP-712 domain and types for signing - will be set dynamically
 let DOMAIN;
@@ -265,28 +265,33 @@ async function getRecordDetails(contract, txId) {
 }
 
 async function main() {
-  console.log("🚀 FakeChain IV Oracle Contract Test");
+  console.log("🚀 FakeChain IV Oracle Contract Test - Sepolia Testnet");
   console.log("=".repeat(60));
+  
+  // Get network info and verify we're on Sepolia
+  const network = await ethers.provider.getNetwork();
+  
+  if (network.chainId !== 11155111n) {
+    throw new Error(`This test only works on Sepolia testnet (Chain ID: 11155111). Current network: ${network.chainId}. Use: --network sepolia`);
+  }
   
   // Get signers
   const [deployer] = await ethers.getSigners();
   console.log(`Deployer/Oracle signer: ${deployer.address}`);
+  console.log(`Network: Sepolia Testnet (Chain ID: ${network.chainId})`);
+  console.log(`Contract address: ${CONTRACT_ADDRESS}`);
   
   // Connect to deployed contract
   const IVFakeChainOracle = await ethers.getContractFactory("IVFakeChainOracle");
   const contract = IVFakeChainOracle.attach(CONTRACT_ADDRESS);
   
-  console.log(`Contract address: ${CONTRACT_ADDRESS}`);
-  
   // Set up EIP-712 domain with correct chain ID
-  const network = await ethers.provider.getNetwork();
   DOMAIN = {
     name: "IVFakeChainOracle",
     version: "1",
     chainId: Number(network.chainId),
     verifyingContract: CONTRACT_ADDRESS
   };
-  console.log(`Network chain ID: ${network.chainId}`);
   
   // Verify contract is working
   const totalRecords = await contract.totalRecords();
