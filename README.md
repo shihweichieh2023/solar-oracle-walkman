@@ -1,10 +1,10 @@
-# IV FakeChain Oracle - Solidity Smart Contract
+# 🔗 Solar Oracle Walkman - IV Voiceprint Smart Contract
 
-This is the Solidity smart contract version of the Python FakeChain IV server, converted to run on-chain with enhanced security validation.
+A blockchain-based smart contract that validates and stores IV voiceprint data securely on the Ethereum network. Think of it as a digital notary that checks if voice data is genuine and keeps permanent records.
 
 ## 🔒 Features
 
-- **Comprehensive IV Validation**: All Python validation logic converted to Solidity
+- **Comprehensive IV Validation**: Advanced security validation for voiceprint data
 - **EIP-712 Signatures**: Secure oracle signature verification
 - **On-chain Storage**: Immutable IV voiceprint records
 - **Chain Integrity**: Oracle verification of entire chain validity
@@ -13,7 +13,7 @@ This is the Solidity smart contract version of the Python FakeChain IV server, c
 ## 📁 Project Structure
 
 ```
-iv_fakechain_server/
+solar-oracle-walkman/
 ├── contracts/
 │   └── IVFakeChainOracle.sol    # The main smart contract code
 ├── scripts/
@@ -28,7 +28,7 @@ iv_fakechain_server/
 └── README.md                    # This file
 ```
 
-## 🛡️ Validation Rules (Converted from Python)
+## 🛡️ Security Validation Rules
 
 1. **Range Validation**: Values must be between 0.01-3.0 (scaled by 1000 in contract)
 2. **Statistical Analysis**: Variance checks for realistic IV curves
@@ -125,7 +125,7 @@ Configure in `hardhat.config.js`:
 1. **EIP-712 Typed Signatures**: Prevents signature replay attacks
 2. **Nonce Protection**: Each IV hash can only be used once
 3. **Timestamp Validation**: Prevents stale data submission
-4. **Comprehensive Validation**: All Python security rules implemented
+4. **Comprehensive Validation**: Advanced security rules implemented
 5. **Owner Controls**: Upgradeable oracle signer
 
 ## 📊 Gas Optimization
@@ -135,11 +135,11 @@ Configure in `hardhat.config.js`:
 - Minimal storage patterns
 - Event-based indexing
 
-## 🔄 Migration from Python
+## 🎯 Next Steps
 
-The Solidity contract maintains full compatibility with the Python server's validation logic while adding blockchain-native features:
+1. **Run the tests** to see everything working
+2. **Try modifying test data** to see security in action
+3. **Deploy to testnet** for real blockchain experience
+4. **Integrate with your application** using the contract address
 
-- **Same validation rules** as Python implementation
-- **Enhanced security** with cryptographic signatures
-- **Immutable storage** on blockchain
-- **Decentralized verification** via smart contract
+The contract is now ready to validate and store IV voiceprint data securely on the blockchain!
