@@ -1,7 +1,7 @@
 import pkg from 'hardhat';
 const { ethers } = pkg;
 
-const CONTRACT_ADDRESS = "0x38608A02e888D6E60919FF1fCe1cce31F01465d5";
+const CONTRACT_ADDRESS = "0xeF19a90e5786dd0e89264F38f52CF81102db938e";
 
 async function verifyTestnetDeployment() {
   console.log("🔍 Verifying Testnet Deployment");

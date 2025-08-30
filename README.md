@@ -24,6 +24,7 @@ solar-oracle-walkman/
 │   └── SolarOracleWalkman.test.js # Comprehensive test suite
 ├── hardhat.config.cjs           # Configuration for development tools
 ├── package.json                 # List of required software packages
+├── .nvmrc                       # Node.js version specification
 ├── DEPLOYMENT_GUIDE.md          # Detailed deployment instructions
 └── README.md                    # This file
 ```
@@ -38,8 +39,7 @@ solar-oracle-walkman/
 
 ## 🚀 Installation & Setup
 
-```bash
-cd### Step 1: Install Dependencies
+### Step 1: Install Dependencies
 ```bash
 # Install dependencies (requires Node.js 18+)
 npm install
@@ -52,14 +52,22 @@ npx hardhat compile
 ```
 **What this does**: Translates human-readable contract code into machine code
 
-### Step 3: Deploy Contract to Sepolia Testnet
+### Step 3: Set up Environment Variables
+Create a `.env` file in the project root:
+```bash
+INFURA_API_KEY=your_infura_project_id
+PRIVATE_KEY=your_wallet_private_key
+ETHERSCAN_API_KEY=your_etherscan_api_key
+```
+
+### Step 4: Deploy Contract to Sepolia Testnet
 ```bash
 # Deploy to the live Sepolia testnet
 npx hardhat run scripts/deploy.js --network sepolia
 ```
 **What this does**: Puts your smart contract onto the real Sepolia blockchain and gives it an address
 
-### Step 4: Test the Contract
+### Step 5: Test the Contract
 ```bash
 # Run the comprehensive test suite on Sepolia testnet
 npx hardhat run scripts/test-contract.js --network sepolia
@@ -87,7 +95,7 @@ const report = {
     timestamp: Math.floor(Date.now() / 1000)
 };
 
-const signature = await signer._signTypedData(domain, types, report);
+const signature = await signer.signTypedData(domain, types, report);
 const txId = await oracle.verifyAndStore(report, signature);
 ```
 
@@ -115,7 +123,7 @@ Run tests: `npx hardhat test`
 
 ## 🌐 Deployment Networks
 
-Configure in `hardhat.config.js`:
+Configure in `hardhat.config.cjs`:
 - **Hardhat**: Local testing
 - **Localhost**: Local node
 - **Mainnet/Testnet**: Add network configs
@@ -134,6 +142,15 @@ Configure in `hardhat.config.js`:
 - Efficient validation algorithms
 - Minimal storage patterns
 - Event-based indexing
+
+## 🌐 Live Deployment
+
+The SolarOracleWalkman contract is currently deployed on Sepolia testnet:
+
+- **Contract Address**: `0xeF19a90e5786dd0e89264F38f52CF81102db938e`
+- **Network**: Sepolia Testnet (Chain ID: 11155111)
+- **Etherscan**: https://sepolia.etherscan.io/address/0xeF19a90e5786dd0e89264F38f52CF81102db938e
+- **Status**: ✅ Active and verified
 
 ## 🎯 Next Steps
 

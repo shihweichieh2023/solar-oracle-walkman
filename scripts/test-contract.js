@@ -2,7 +2,7 @@ import pkg from 'hardhat';
 const { ethers } = pkg;
 
 // Contract address on Sepolia testnet
-const CONTRACT_ADDRESS = "0x38608A02e888D6E60919FF1fCe1cce31F01465d5";
+const CONTRACT_ADDRESS = "0xeF19a90e5786dd0e89264F38f52CF81102db938e";
 
 // EIP-712 domain and types for signing - will be set dynamically
 let DOMAIN;
@@ -18,26 +18,38 @@ const TYPES = {
 };
 
 function generateFake7DVoiceprint() {
-  // Generate 7 values with very precise variance targeting ~100-200 range
-  // Need to be extremely careful with variance calculation
+  // Generate random but valid 7-D voiceprint data
+  // Base value around 1000 (1.0) with random variations
   
-  return [
-    1000,  // 1.0
-    1020,  // 1.02 (+20)
-    980,   // 0.98 (-40 from 1020, non-monotonic)
-    1015,  // 1.015 (+35)
-    985,   // 0.985 (-30)
-    1025,  // 1.025 (+40)
-    990    // 0.99 (-35)
-  ];
+  const baseValue = 900 + Math.floor(Math.random() * 200); // 900-1100 range
+  const variations = [];
   
-  // Analysis:
-  // - Range: 980-1025 = 45 (well under 2500 limit) ✓
-  // - All values 10-3000 ✓ 
-  // - Non-monotonic pattern ✓
-  // - 7 unique values ✓
-  // - Small differences (20-40) ✓
-  // - Mean ≈ 1002, variance should be much smaller ✓
+  // Generate 7 unique values with controlled variance
+  for (let i = 0; i < 7; i++) {
+    const variation = -50 + Math.floor(Math.random() * 100); // -50 to +50
+    const value = Math.max(100, Math.min(2000, baseValue + variation)); // Keep in valid range
+    variations.push(value);
+  }
+  
+  // Ensure non-monotonic by shuffling if needed
+  if (isMonotonic(variations)) {
+    // Swap two middle elements to break monotonic pattern
+    [variations[2], variations[4]] = [variations[4], variations[2]];
+  }
+  
+  return variations;
+}
+
+function isMonotonic(arr) {
+  let increasing = true;
+  let decreasing = true;
+  
+  for (let i = 0; i < arr.length - 1; i++) {
+    if (arr[i] > arr[i + 1]) increasing = false;
+    if (arr[i] < arr[i + 1]) decreasing = false;
+  }
+  
+  return increasing || decreasing;
 }
 
 function generateBadVoiceprint() {
@@ -126,8 +138,8 @@ async function testValidVoiceprint(contract, signer) {
       return false;
     }
     
-    // Sign the report
-    const signature = await signIVReport(signer, report);
+    // Sign the report using standard EIP-712
+    const signature = await signer.signTypedData(DOMAIN, TYPES, report);
     console.log(`   Signature: ${signature.slice(0, 20)}...`);
     
     // Debug: Check contract state before transaction
